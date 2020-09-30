@@ -1,0 +1,142 @@
+{{extend 'layout.html'}}
+<div class="py-5" >
+    <div class="container">
+      <div class="row p-2">
+
+              <a class="btn btn-link" href="{{=URL('acesso_cliente', args=operacao.cliente)}}" style="color:#3b5998">
+                  <i class="fa fa-fw fa-1x py-1 fa-hand-o-left"></i>
+                  Voltar
+          </a>
+
+              <a class="btn btn-link" href="{{=URL('alt_operacao', args=operacao.id)}}" style="color:#3b5998">
+                  <i class="fa fa-cog fa-fw fa-1x py-1"></i>
+                  Alterar Operação
+          </a>
+
+              <a class="btn btn-link" href="{{=URL('alt_operacao_admin', args=operacao.id)}}" style="color:#3b5998">
+                  <i class="fa fa-plus fa-fw fa-1x py-1"></i>
+                  Alteração Administrativa
+          </a>
+      </div>
+      <div class="row">
+        <div class="col-md-6 p-2">
+            <center>
+          <h5 class="">Informações administrativas</h5>
+                </center>
+          <ul class="list-group p-2">
+            <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Nome do Cliente</b>
+                {{=operacao.cliente.nome}}
+              </li>
+              <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Telefone do Cliente</b>
+                {{=operacao.cliente.telefone}}
+              </li>
+               <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>CPF do Cliente</b>
+                {{=operacao.cliente.cpf}}
+              </li>
+               <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Produtor</b>
+                {{=operacao.produtor.nome}}
+              </li>
+              {{if operacao.produtor!=1:}}
+              <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Telefone do Produtor</b>
+                {{=operacao.cliente.telefone}}
+              </li>
+              {{pass}}
+              <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Tipo de Operação</b>
+                {{=operacao.tipo_operacao}}
+              </li>
+               <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Nome Operação</b>
+                {{=operacao.nome}}
+              </li>
+               <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Telefone Operação</b>
+                {{=operacao.telefone}}
+              </li>
+               <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>CPF da Operação</b>
+                {{=operacao.cpf}}
+              </li>
+               <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Banco</b>
+                {{=(operacao.banco)[7:30]}}
+              </li>
+              <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Agência</b>
+                {{=operacao.agencia}}
+              </li>
+              <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Conta</b>
+                {{=operacao.conta}}
+              </li>
+              <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Tipo de Conta</b>
+                {{=operacao.tipo_conta}}
+              </li>
+               </ul>
+        </div>
+
+        <div class="col-md-6 p-2">
+            <center>
+          <h5 class="">Informações administrativas</h5>
+                </center>
+            <ul class="list-group p-2">
+                <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Data da Operação</b>
+                <b>{{=("{}/{}/{}".format(operacao.data_operacao.day,operacao.data_operacao.month,operacao.data_operacao.year))}}</b>
+              </li>
+                <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Responsável</b>
+                {{=operacao.created_by.first_name}} {{=operacao.created_by.last_name}}
+              </li>
+                <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Operadora</b>
+                {{=operacao.operadora}}
+              </li>
+                <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Numero de Parcelas</b>
+                {{=operacao.quant_parcelas}}
+              </li>
+               <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Valor da Operação</b>
+                   R$ {{="{:,}".format(round(operacao.valor_operacao,1)).replace(",",".")}}0
+              </li>
+                {{saldo=operacao.valor_operacao}}
+                <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Valor Repassado</b>
+                   R$ {{="{:,}".format(round(operacao.valor_repassado,1)).replace(",",".")}}0
+              </li>
+                 {{saldo-=operacao.valor_repassado}}
+                <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Bonus do Cliente</b>
+                   R$ {{="{:,}".format(round(operacao.bonus,1)).replace(",",".")}}0
+              </li>
+                 {{saldo-=operacao.bonus}}
+                <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Valor da Comissão</b>
+                   R$ {{="{:,}".format(round(operacao.valor_comissao,1)).replace(",",".")}}0
+              </li>
+                 {{saldo-=operacao.valor_comissao}}
+                {{total_taxa_operacao=0}}
+                {{if operacao.taxa_operadora>0 and operacao.valor_operacao>0:}}
+                {{total_taxa_operacao=operacao.taxa_operadora*operacao.valor_operacao/100}}
+                {{pass}}
+                <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Taxa da Operação ({{="{:,}".format(round(operacao.taxa_operadora,2))}}%)</b>
+                   R$ {{="{:,}".format(round(total_taxa_operacao,1)).replace(",",".")}}0
+              </li>
+                 {{saldo-=total_taxa_operacao}}
+              <li class=" border-1 list-group-item d-flex justify-content-between align-items-center">
+                <b>Saldo da Operação</b>
+                   R$ {{="{:,}".format(round(saldo,1)).replace(",",".")}}0
+              </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,79 @@
+{{extend 'layout.html'}}
+<div class="py-5" >
+{{=operacao.operadora}}
+    <div class="container">
+        <div class="row p-3">
+        <div class="col-md-12">
+          <div class="row" id="noprint">
+            <div class="col-md-8">
+               <a class="btn btn-link"id="noprint" href="{{=URL('index',  args=[operacao.data_operacao.month,operacao.data_operacao.year])}}" style="color:#3b5998"><i class="fa fa-fw fa-1x py-1 fa-hand-o-left"></i> Voltar</a>
+              <a class="btn btn-link" href="{{=URL('alt_operacao', args=operacao.id)}}" style="color:#3b5998"><i class="fa fa-cog fa-fw fa-1x py-1"></i> Alterar dados da Operação</a>
+            <div class="col-md-4">
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="border"><b>CADASTRO DE CLIENTE ({{=operacao.tipo}})</b></h5>
+          <p class="">DATA: {{=("{}/{}/{}".format(operacao.data_operacao.day,operacao.data_operacao.month,operacao.data_operacao.year))}} </p>
+          <h5 class="text-center border"><b>DADOS PESSOAIS</b></h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class=""><b>CLIENTE:</b> {{=operacao.cliente.nome}}</p>
+          <p class=""><b>TELEFONE:</b> {{=operacao.cliente.telefone}}</p>
+            {{if len(operacao.cliente.lougradouro)>5:}}
+          <p class=""><b>ENDEREÇO:</b> {{=operacao.cliente.lougradouro}} Nº {{=operacao.cliente.lougradouro}}</p>
+          <p class=""><b>BAIRRO:</b> {{=operacao.cliente.bairro}}</p>
+            {{pass}}
+                        {{operacao.cliente.cpf=(operacao.cliente.cpf).replace(".","").replace("-","")}}
+                    {{operacao.cliente.cpf=""+(operacao.cliente.cpf)[0:3]+"."+(operacao.cliente.cpf)[3:6]+"."+(operacao.cliente.cpf)[6:9]+"-"+(operacao.cliente.cpf)[9:11]}}
+          <p class=""><b>CPF/RG:</b> {{=operacao.cliente.cpf}} | {{=operacao.cliente.rg}}</p>
+          <p class=""><b>TIPO DE OPERAÇÃO:</b> {{=operacao.tipo_operacao}}</p>
+            {{if not (operacao.tipo_operacao.count("Próprio")):}}
+          <p class=""><b>TERCEIROS NOME:</b> {{=operacao.nome}}</p>
+          <p class=""><b>TELEFONE TERCEIROS:</b> {{=operacao.telefone}}</p>
+            {{if len(operacao.cliente.email)>10:}}
+          <p class=""><b>E- MAIL:</b> {{=operacao.cliente.email}}</p>
+            {{pass}}
+            {{pass}}
+            {{if not (operacao.banco.count("Espécie")):}}
+          <h5 class="text-center border"><b>DADOS BANCÁRIOS</b></h5>
+          <p class=""><b>BANCO:</b> {{=operacao.banco}}</p>
+          <p class=""><b>AGENCIA/CONTA:</b> {{=operacao.agencia}} | {{=operacao.conta}}</p>
+          <p class=""><b>OPERAÇÃO:</b> {{=operacao.op}}</p>
+            {{operacao.cpf_conta=(operacao.cpf_conta).replace(".","").replace("-","")}}
+                    {{operacao.cpf_conta=""+(operacao.cpf_conta)[0:3]+"."+(operacao.cpf_conta)[3:6]+"."+(operacao.cpf_conta)[6:9]+"-"+(operacao.cpf_conta)[9:11]}}
+          <p class=""><b>CPF:</b> {{=operacao.cpf_conta}}</p>
+          <p class=""><b>NOME:</b> {{=operacao.nome_conta}}</p>
+          <p class=""><b>TIPO DE CONTA:</b> {{=operacao.tipo_conta}}</p>
+            {{else:}}
+            
+          <h5 class="text-center border"><b>INFORMAÇÕES</b></h5>
+          <p class=""><b>VALOR RECEBIDO EM ESPÉCIE</b></p>
+            {{pass}}
+            {{parcela=0}}
+            {{if (operacao.valor_operacao>0) and (operacao.quant_parcelas>0):}}
+            {{parcela=operacao.valor_operacao/operacao.quant_parcelas}}
+            {{pass}}
+            {{txt = "R$ {parcela:.2f}"}}
+            {{txt.format(parcela = parcela)}}
+          <p class=""><b>N. DE PARCELAS:</b> {{=operacao.quant_parcelas}} de R$ {{="{:,}".format(round(parcela,2)).replace(",","++").replace(".",",").replace("++",".")}}</p>
+          <p class=""><b>VALOR EMPRESTADO PARA CLIENTE:</b>  R$ {{=("{:,}".format(round(operacao.valor_repassado+0.004,2)).replace(",","++").replace(".",",").replace("++",".")+" ").replace(",0 ",",00")}}</p>
+            <hr>
+          <p class="border p-3">OBS: CONFIRMO AS INFORMAÇÕES REFERENTES AOS DADOS PESSOAIS ACIMA E ESTOU CIENTE QUE TODAS AS INFORMAÇÕES BANCÁRIAS PASSADAS SÃO DE MINHA INTEIRA RESPONSABILIDADE E EM CASO DE ERRO, DEVEREI AGUARDAR OS PROCEDIMENTOS DA EMPRESA FS NEW CREDIT, SE OCORRER ESTORNO O CLIENTE DEVE APRESENTAR O PROBLEMA PARA QUE A EMPRESA RESOLVA-O IMEDIATAMENTE. EM CASO DE INFORMAÇÃO ERRADA QUANTO A CONTA BANCÁRIA, A EMPRESA FS NEW CREDIT NÃO SE RESPONSABILIZA POR ESTORNO OU TRANSFERÊNCIA ERRADA.</p>
+          <p class="text-center"><b>ASS: __________________________________________________</b><br></p>
+          <h5 class="text-center"><b>{{=operacao.cliente.nome}}</b></h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class=""><b>PRODUÇÃO: {{=operacao.produtor.nome}}</b></p>
+            <p class=""><b>OPERAÇÃO: {{=operacao.created_by.first_name}} {{=operacao.created_by.last_name}}</b></p>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,229 @@
+# -*- coding: utf-8 -*-
+
+# -------------------------------------------------------------------------
+# AppConfig configuration made easy. Look inside private/appconfig.ini
+# Auth is for authenticaiton and access control
+# -------------------------------------------------------------------------
+from gluon.contrib.appconfig import AppConfig
+from gluon.tools import Auth
+
+# -------------------------------------------------------------------------
+# This scaffolding model makes your app work on Google App Engine too
+# File is released under public domain and you can use without limitations
+# -------------------------------------------------------------------------
+
+if request.global_settings.web2py_version < "2.15.5":
+    raise HTTP(500, "Requires web2py 2.15.5 or newer")
+
+# -------------------------------------------------------------------------
+# if SSL/HTTPS is properly configured and you want all HTTP requests to
+# be redirected to HTTPS, uncomment the line below:
+# -------------------------------------------------------------------------
+# request.requires_https()
+
+# -------------------------------------------------------------------------
+# once in production, remove reload=True to gain full speed
+# -------------------------------------------------------------------------
+configuration = AppConfig()
+
+if not request.env.web2py_runtime_gae:
+    # ---------------------------------------------------------------------
+    # if NOT running on Google App Engine use SQLite or other DB
+    # ---------------------------------------------------------------------
+    db = DAL(configuration.get('db.uri'),
+             pool_size=configuration.get('db.pool_size'),
+             migrate_enabled=configuration.get('db.migrate'),
+             check_reserved=['all'])
+else:
+    # ---------------------------------------------------------------------
+    # connect to Google BigTable (optional 'google:datastore://namespace')
+    # ---------------------------------------------------------------------
+    db = DAL('google:datastore+ndb')
+    # ---------------------------------------------------------------------
+    # store sessions and tickets there
+    # ---------------------------------------------------------------------
+    session.connect(request, response, db=db)
+    # ---------------------------------------------------------------------
+    # or store session in Memcache, Redis, etc.
+    # from gluon.contrib.memdb import MEMDB
+    # from google.appengine.api.memcache import Client
+    # session.connect(request, response, db = MEMDB(Client()))
+    # ---------------------------------------------------------------------
+
+# -------------------------------------------------------------------------
+# by default give a view/generic.extension to all actions from localhost
+# none otherwise. a pattern can be 'controller/function.extension'
+# -------------------------------------------------------------------------
+response.generic_patterns = [] 
+if request.is_local and not configuration.get('app.production'):
+    response.generic_patterns.append('*')
+
+# -------------------------------------------------------------------------
+# choose a style for forms
+# -------------------------------------------------------------------------
+response.formstyle = 'bootstrap4_inline'
+response.form_label_separator = ''
+
+# -------------------------------------------------------------------------
+# (optional) optimize handling of static files
+# -------------------------------------------------------------------------
+# response.optimize_css = 'concat,minify,inline'
+# response.optimize_js = 'concat,minify,inline'
+
+# -------------------------------------------------------------------------
+# (optional) static assets folder versioning
+# -------------------------------------------------------------------------
+# response.static_version = '0.0.0'
+
+# -------------------------------------------------------------------------
+# Here is sample code if you need for
+# - email capabilities
+# - authentication (registration, login, logout, ... )
+# - authorization (role based authorization)
+# - services (xml, csv, json, xmlrpc, jsonrpc, amf, rss)
+# - old style crud actions
+# (more options discussed in gluon/tools.py)
+# -------------------------------------------------------------------------
+
+# host names must be a list of allowed host names (glob syntax allowed)
+auth = Auth(db, host_names=configuration.get('host.names'))
+
+# -------------------------------------------------------------------------
+# create all tables needed by auth, maybe add a list of extra fields
+# -------------------------------------------------------------------------
+auth.settings.extra_fields['auth_user'] = []
+auth.define_tables(username=False, signature=False)
+
+# -------------------------------------------------------------------------
+# configure email
+# -------------------------------------------------------------------------
+mail = auth.settings.mailer
+mail.settings.server = 'logging' if request.is_local else configuration.get('smtp.server')
+mail.settings.sender = configuration.get('smtp.sender')
+mail.settings.login = configuration.get('smtp.login')
+mail.settings.tls = configuration.get('smtp.tls') or False
+mail.settings.ssl = configuration.get('smtp.ssl') or False
+
+# -------------------------------------------------------------------------
+# configure auth policy
+# -------------------------------------------------------------------------
+auth.settings.registration_requires_verification = False
+auth.settings.registration_requires_approval = False
+auth.settings.reset_password_requires_verification = True
+
+# -------------------------------------------------------------------------
+# read more at http://dev.w3.org/html5/markup/meta.name.html
+# -------------------------------------------------------------------------
+response.meta.author = configuration.get('app.author')
+response.meta.description = configuration.get('app.description')
+response.meta.keywords = configuration.get('app.keywords')
+response.meta.generator = configuration.get('app.generator')
+response.show_toolbar = configuration.get('app.toolbar')
+
+# -------------------------------------------------------------------------
+# your http://google.com/analytics id
+# -------------------------------------------------------------------------
+response.google_analytics_id = configuration.get('google.analytics_id')
+
+# -------------------------------------------------------------------------
+# maybe use the scheduler
+# -------------------------------------------------------------------------
+if configuration.get('scheduler.enabled'):
+    from gluon.scheduler import Scheduler
+    scheduler = Scheduler(db, heartbeat=configuration.get('scheduler.heartbeat'))
+
+# -------------------------------------------------------------------------
+# Define your tables below (or better in another model file) for example
+#
+# >>> db.define_table('mytable', Field('myfield', 'string'))
+#
+# Fields can be 'string','text','password','integer','double','boolean'
+#       'date','time','datetime','blob','upload', 'reference TABLENAME'
+# There is an implicit 'id integer autoincrement' field
+# Consult manual for more options, validators, etc.
+#
+# More API examples for controllers:
+#
+# >>> db.mytable.insert(myfield='value')
+# >>> rows = db(db.mytable.myfield == 'value').select(db.mytable.ALL)
+# >>> for row in rows: print row.id, row.myfield
+# -------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------
+# after defining tables, uncomment below to enable auditing
+# -------------------------------------------------------------------------
+# auth.enable_record_versioning(db)
+
+
+db.define_table('cliente',
+                Field('nome', 'string', label='Nome',requires = IS_UPPER()),
+                Field('cpf', 'string', label='CPF',requires = IS_UPPER()),
+                Field('rg', 'string', label='RG',requires = IS_UPPER()),
+                Field('telefone', 'string', label='Telefone',requires = IS_UPPER()),
+                Field('lougradouro', 'string', label='Lougradouro',requires = IS_UPPER()),
+                Field('numero', 'string', label='Numero',requires = IS_UPPER()),
+                Field('bairro', 'string', label='Bairro', default='',requires = IS_UPPER()),
+                Field('cidade', 'string', label='Cidade', default='Juazeiro do Norte CE',requires = IS_UPPER()),
+                Field('email', 'string', label='Email', default='Sem Email',requires = IS_UPPER()),
+                Field('observacao', 'text', label='Observação',requires = IS_UPPER()),
+                format='%(nome)s')
+
+db.define_table('produtor',
+                Field('nome', 'string', label='Nome',requires = IS_UPPER()),
+                Field('telefone', 'string', label='Telefone',requires = IS_UPPER()),
+                Field('observacao', 'text', label='Observação',requires = IS_UPPER()),
+                format='%(nome)s')
+
+db.define_table('operacao',
+                Field('cliente','reference cliente', label='Cliente', writable=True, readable=True),
+                Field('tipo', 'string', default='Operação Real', writable=False, readable=False,label="Tipo", notnull=True),
+                Field('tipo_operacao', 'string', default='Cartão de Credito - Próprio',label="Tipo Operação", notnull=True),
+                Field('nome', 'string', label='Nome Cartão',requires = IS_UPPER()),
+                Field('cpf', 'string', label='CPF do Cartão',requires = IS_UPPER()),
+                Field('telefone', 'string', label='Fone Prop. Cartão',requires = IS_UPPER()),
+                Field('valor_repassado', 'double',label='Valor Financiado', notnull=True, default=0),
+                Field('valor_cobrado_operadora', 'double', writable=False, readable=False,label='Valor Operadora', notnull=True, default=0),
+                Field('quant_parcelas', 'integer',label='Quant. Parcelas', writable=True, readable=True, default=6, notnull=True),
+                Field('operadora', 'string', label='Bandeira', notnull=True, default='Visa',requires = IS_UPPER()),
+                Field('bonus', 'double',label='Bonus', notnull=True, default=0),
+				Field('valor_operacao', 'double',label='Valor Operação', notnull=True, default=0, writable=True, readable=True),
+                Field('data_operacao', 'date', label="Data da Operação",notnull=True, default=request.now, requires = IS_DATE(format=('%d-%m-%Y'))),
+                Field('banco', 'string', default='000 – Em Espécie.',label="Banco", notnull=True),
+				Field('agencia', 'string', label='Agência', default='000-0',notnull=True),
+				Field('conta', 'string', label='Conta', default='000-0', notnull=True),
+                Field('op', 'string', default='000 – Em Espécie',label="Operação", notnull=True),
+                Field('tipo_conta', 'string', label='Tipo de Conta', default='Poupança', notnull=True),
+                Field('nome_conta', 'string', label='Nome (Conta)', default='', notnull=True,requires = IS_UPPER()),
+                Field('cpf_conta', 'string', label='CPF/CNPJ (Conta)', default='', notnull=True),
+                Field('produtor','reference produtor', label='Produtor', notnull=True, default=1, writable=True, readable=True),
+				Field('valor_comissao', 'double',label='Valor Comissão', notnull=True, default=0, writable=False, readable=False),
+                Field('produtor_pago', 'boolean', writable=False, readable=False, default=False),
+                Field('taxa_operadora', 'double',label='% Operadora', notnull=True, default=0, writable=False, readable=False),
+                Field('confirmado', 'boolean', writable=False, readable=False, default=False),
+                auth.signature,
+                format='%(banco)s')
+
+db.cliente.cpf.requires  = IS_MATCH('^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$', error_message='Formato 000.000.000-00'),
+
+db.operacao.cpf.requires  = IS_MATCH('^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$', error_message='Formato 000.000.000-00'),
+
+
+
+
+db.operacao.agencia.requires  = IS_MATCH('^(\d{2,4}\-\d{1})|(\d{2,4})?$', error_message='Formato 0000 ou 0000-0'),
+
+db.operacao.conta.requires  = IS_MATCH('^\d{2,10}-\d{1}$', error_message='Formato 000000-0'),
+
+
+db.operacao.tipo.requires = IS_IN_SET(['Simulação','Operação Real'])
+db.operacao.tipo_operacao.requires = IS_IN_SET(['Cartão de Credito - Próprio','Cartão de Credito - Terceiro'])
+
+db.operacao.quant_parcelas.requires = IS_IN_SET(['1','2','3','4','5','6','7','8','9','10','11','12'])
+
+db.operacao.banco.requires = IS_IN_SET(['000 – Em Espécie.','001 – Banco do Brasil S.A.','033 – Banco Santander (Brasil) S.A.','104 – Caixa Econômica Federal','237 – Banco Bradesco S.A.','341 – Banco Itaú S.A.','356 – Banco Real S.A. (antigo)','389 – Banco Mercantil do Brasil S.A.','399 – HSBC Bank Brasil S.A. – Banco Múltiplo','422 – Banco Safra S.A.','453 – Banco Rural S.A.','633 – Banco Rendimento S.A.','652 – Itaú Unibanco Holding S.A.','745 – Banco Citibank S.A.'])
+
+db.operacao.op.requires = IS_IN_SET(['000 – Em Espécie','001 – Conta Corrente de Pessoa Física','002 – Conta Simples de Pessoa Física','003 – Conta Corrente de Pessoa Jurídica','006 – Entidades Públicas','007 – Depósitos Instituições Financeiras','013 – Poupança de Pessoa Física','022 – Poupança de Pessoa Jurídica','028 – Poupança de Crédito Imobiliário','043 – Depósitos Lotéricos'])
+
+db.operacao.tipo_conta.requires = IS_IN_SET(['Corrente','Poupança'])
+
+db.operacao.operadora.requires = IS_IN_SET(['Visa', 'MasterCard', 'American Express', 'Hipercard', 'Elo','Maq Stone'])

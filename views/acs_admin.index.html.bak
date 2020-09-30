@@ -1,0 +1,24 @@
+{{extend 'layout.html'}}
+ <div class="py-5 text-center text-white" style="background-color: #cce6ff;">
+    <div class="container">
+      <div class="row">
+        <div class="mx-auto col-md-12">
+          <h1 class="mb-3 text-dark">Titulo</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 p-4"> <i aria-hidden="true" class="fa fa-database fa-5x text-dark"></i>
+          <h4 class="text-dark"> <b>Titulo</b> </h4>
+          <p class="mb-0 text-dark">Descrição</p>
+        </div>
+        <div class="col-lg-4 col-md-6 p-4"> <i class="fa fa-database fa-5x text-dark" aria-hidden="true"></i>
+          <h4 class="text-dark"> <b>Titulo</b> </h4>
+          <p class="mb-0 text-dark">Descrição</p>
+        </div>
+        <div class="col-lg-4 col-md-6 p-4"> <i class="fa fa-database fa-5x text-dark" aria-hidden="true"></i>
+          <h4 class="text-dark"> <b>Titulo</b> </h4>
+          <p class="mb-0 text-dark">Descrição</p>
+        </div>
+      </div>
+    </div>
+  </div>
