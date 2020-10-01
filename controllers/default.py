@@ -5,8 +5,7 @@
 # -------------------------------------------------------------------------
 
 def index():
-    redirect("https://rogoberto.pythonanywhere.com/welcome/default/manutencao")
-    #form = db((db.cliente)).select()
+    form = db((db.cliente)).select()
     return locals()
 
 @auth.requires_login()
