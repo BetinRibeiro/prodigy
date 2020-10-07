@@ -1,6 +1,6 @@
 {{extend 'layout.html'}}
 
-
+{{bonus=0}}
 {{mes="Janeiro"}}
 {{if primeira_data.month==2:}}
 {{mes="Fevereiro"}}
@@ -52,7 +52,7 @@
 <div class="py-5">
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
           <h5 class="">Operações</h5>
         </div>
       </div>
@@ -87,6 +87,7 @@
                   <th scope="col">Operação</th>
                   <th scope="col" style="">Entregue</th>
                   <th scope="col" >Comissão</th>
+                  <th scope="col" >Bônus</th>
                   <th scope="col" style="" contenteditable="true">Operadora</th>
                   <th scope="col" style="">Lucro</th>
                   <th scope="col" style="">Perc Lucro</th>
@@ -162,7 +163,6 @@
                     {{elif row.quant_parcelas==10:}}{{row.valor_cobrado_operadora=row.valor_operacao*0.0958}}
                     {{elif row.quant_parcelas==11:}}{{row.valor_cobrado_operadora=row.valor_operacao*0.1004}}
                     {{elif row.quant_parcelas==12:}}{{row.valor_cobrado_operadora=row.valor_operacao*0.1040}}
-                    
                     {{pass}}
                     {{elif row.operadora=="Maq Stone":}}
                     {{if row.quant_parcelas==1:}}{{row.valor_cobrado_operadora=row.valor_operacao*1.0000}}
@@ -193,26 +193,31 @@
                     {{pass}}
 
                   <td>R$ {{="{:,}".format(round(row.valor_comissao,1)).replace(",",".")}}0</td>
+                    <td>R$ {{="{:,}".format(round(row.bonus,1)).replace(",",".")}}0</td>
+                    {{bonus+=row.bonus}}
 {{totalop+=row.valor_cobrado_operadora}}
                     <td>R$ {{="{:,}".format(round(row.valor_cobrado_operadora,2)).replace(",",".")}}</td>
-                    
-                     {{lucro=row.valor_operacao-row.valor_repassado-row.valor_cobrado_operadora}}
+                     {{lucro=row.valor_operacao-row.valor_repassado-row.valor_cobrado_operadora-row.valor_comissao}}
                     {{lucrototal+=lucro}}
                     <td>R$ {{="{:,}".format(round(lucro,2)).replace(",",".")}}</td>
-
-                   
-                   
                     {{if lucro>0:}}
                     <td style="color:#0000ff">{{="{:,}".format(round(lucro/row.valor_operacao*100,2)).replace(",",".")}}%</td>
                     {{else:}}
                   <td style="color:#ff0000">{{="{:,}".format(round(0,2)).replace(",",".")}}%</td>
                     {{pass}}
-                    
                     <td><a class="btn btn-link" href="{{=URL('visualizar_operacao', args=row.id)}}" style="color:#cc5200">
                         {{=row.operadora}}
                         </a></td>
+                    {{if lucro>0:}}
                   <td>{{="{:,}".format(round(row.valor_cobrado_operadora/row.valor_operacao*100,2)).replace(",",".")}}%</td>
-                </tr>
+                     {{else:}}
+                  <td style="color:#ff0000">{{="{:,}".format(round(0,2)).replace(",",".")}}%</td>
+                    {{pass}}
+                
+                  {{if not row.valor_operacao>0:}}
+                  
+                  {{pass}}
+                    </tr>
                   {{pass}}
               </tbody>
             </table>
@@ -223,21 +228,18 @@
   </div>
 <div class="py-5 text-center">
     <div class="container">
-                    
-                    
       <div class="row">
         <div class="col-md-10 text-center mx-auto">
           <h2 class="mb-0">Resumo do Mês</h2>
           <div class="row justify-content-center">
-            
             <div class="col-lg-4 col-md-4 p-4"> <i class="d-block fa fa-stop-circle mb-2 text-muted fa-2x"></i>
               <h4> <b>Operação Real</b></h4>
-              
               <p class="mb-0">
                   <br>Valor Financiado - <b>R$ {{="{:,}".format(round(total,2)).replace(",",".")}}0</b>
                  <br>Valor Emprestado - <b>R$ {{="{:,}".format(round(totalr,1)).replace(",",".")}}0</b>
                   <br>Valor Operadora - <b>R$ {{="{:,}".format(round(totalop,2)).replace(",",".")}}</b>
                   <br>Valor Comissão - <b>R$ {{="{:,}".format(round(totalc,2)).replace(",",".")}}0</b>
+                  <br>Valor Bônus - <b>R$ {{="{:,}".format(round(bonus,2)).replace(",",".")}}0</b>
                   
                 </p>
             </div>
