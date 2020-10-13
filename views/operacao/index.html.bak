@@ -52,7 +52,7 @@
 <div class="py-5">
     <div class="container">
       <div class="row">
-        <div class="col-12">
+        <div class="col-md-12">
           <h5 class="">Operações</h5>
         </div>
       </div>
@@ -61,7 +61,6 @@
           <a class="btn btn-link" href="{{=URL('default','index')}}" style="color:#3b5998">
                  <i class="fa fa-fw fa-1x py-1 fa-arrow-left"></i> Voltar
              </a>
-         
         </div>
       </div>
       <div class="row">
@@ -226,6 +225,7 @@
       </div>
     </div>
   </div>
+{{if total>0:}}
 <div class="py-5 text-center">
     <div class="container">
       <div class="row">
@@ -240,16 +240,26 @@
                   <br>Valor Operadora - <b>R$ {{="{:,}".format(round(totalop,2)).replace(",",".")}}</b>
                   <br>Valor Comissão - <b>R$ {{="{:,}".format(round(totalc,2)).replace(",",".")}}0</b>
                   <br>Valor Bônus - <b>R$ {{="{:,}".format(round(bonus,2)).replace(",",".")}}0</b>
-                  
                 </p>
             </div>
             <div class="col-lg-4 col-md-4 p-4"> <i class="d-block fa fa-circle-o mb-2 text-muted fa-2x"></i>
               <h4> <b>Lucratividade</b></h4>
                   <br>Lucro Total - <b>R$ {{="{:,}".format(round(lucrototal,2)).replace(",",".")}}</b>
             </div>
-              
-          </div> 
+          </div>
         </div>
       </div>
     </div>
   </div>
+{{else:}}
+
+<div class="py-5 text-center">
+    <div class="container">
+      <div class="row">
+        <center>
+<h1>
+  Sem Operações nesse mês
+</h1>
+          </center>
+      </div></div></div>
+{{pass}}
