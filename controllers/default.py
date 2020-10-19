@@ -50,7 +50,7 @@ def lista_cliente():
     consul=(request.args(1))
     if (consul):
         registros = db((db.cliente.cpf.contains(consul))|(db.cliente.nome.contains(consul))).select(limitby=(0,20))
-    return dict(rows=registros, pagina=pagina, paginas=paginas)
+    return dict(rows=registros, pagina=pagina, paginas=paginas, total=total)
     return locals()
 
 def lista_cliente_amostra():
@@ -94,7 +94,7 @@ def lista_cliente_amostra():
     consul=(request.args(1))
     if (consul):
         registros = db(db.cliente.nome.contains(consul)).select(limitby=(0,20))
-    return dict(rows=registros, pagina=pagina, paginas=paginas)
+    return dict(rows=registros, pagina=pagina, paginas=paginas, total=total)
     return locals()
 
 @auth.requires_login()

@@ -1,5 +1,5 @@
 {{extend 'layout.html'}}
-
+{{a=1}}
 {{bonus=0}}
 {{mes="Janeiro"}}
 {{if primeira_data.month==2:}}
@@ -81,6 +81,7 @@
               <thead>
                 <tr>
                   <th scope="col" class="text-center">#</th>
+                  <th scope="col" class="text-center">#</th>
                   <th scope="col">Data</th>
                   <th scope="col" style="">Q.Par</th>
                   <th scope="col">Operação</th>
@@ -97,6 +98,8 @@
               <tbody>
                   {{for row in rows:}}
                 <tr>
+                  {{if row.valor_operacao>0:}}
+                  <th>{{=a}}</th>{{a+=1}}
                     {{if row.confirmado:}}
                     <th class="text-center">
                         <a class="btn btn-link" href="{{=URL('confirmar_operacao', args=row.id)}}" >
@@ -218,6 +221,8 @@
                   {{pass}}
                     </tr>
                   {{pass}}
+
+                  {{pass}}
               </tbody>
             </table>
           </div>
@@ -245,12 +250,33 @@
             <div class="col-lg-4 col-md-4 p-4"> <i class="d-block fa fa-circle-o mb-2 text-muted fa-2x"></i>
               <h4> <b>Lucratividade</b></h4>
                   <br>Lucro Total - <b>R$ {{="{:,}".format(round(lucrototal,2)).replace(",",".")}}</b>
+              {{a-=1}}
+                  <br>Quant Operações - <b>{{=a}}</b>
+              {{if (total>0)and(a>0):}}
+                  <br>Ticket Méd (Operação) - <b>R$ {{="{:,}".format(round(total/a,2)).replace(",",".")}}</b>
+              {{pass}}
+              
+              {{if (lucrototal>0)and(a>0):}}
+                  <br>Ticket  Méd (Lucro) - <b>R$ {{="{:,}".format(round(lucrototal/a,2)).replace(",",".")}}</b>
+              {{pass}}
             </div>
           </div>
         </div>
       </div>
     </div>
+  <div class="row">
+        <div class="col-md-12">
+          <center>
+              <a class="btn btn-link" href="{{=URL('index', args=[primeira_data.month,primeira_data.year])}}" style="color:#3b5998">
+                  <i class="fa fa-fw fa-1x py-1 fa-arrow-left"></i> Mês Anterior</a>
+              Operações do mês de <b>{{=mes}}</b>
+              <a class="btn btn-link" href="{{=URL('index',  args=[ultima_data.month,ultima_data.year])}}" style="color:#3b5998">Próximo Mês
+                  <i class="fa fa-fw fa-1x py-1 fa-arrow-right"></i> 
+              </a></center>
+        </div>
+      </div>
   </div>
+
 {{else:}}
 
 <div class="py-5 text-center">

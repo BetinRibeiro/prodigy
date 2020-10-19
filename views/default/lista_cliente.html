@@ -1,9 +1,10 @@
 {{extend 'layout.html'}}
+{{a=1}}
 <div class="py-5" >
     <div class="container">
       <div class="row p-3">
         <div class="col-md-12">
-          <h5 class="">Lista de Clientes</h5>
+          <h5 class="">Lista de Clientes <smart>Total {{=total}}</smart></h5>
           <div class="row" id="noprint">
             <div class="col-md-6">
               <a class="btn btn-link" href="{{=URL('index')}}" style="color:#3b5998"><i class="fa fa-fw fa-1x py-1 fa-hand-o-left"></i> Voltar</a>

@@ -12,7 +12,6 @@
                 {{pass}}
               
             <div class="col-md-4">
-              
             </div>
           </div>
         </div>
@@ -37,11 +36,14 @@
                     {{operacao.cliente.cpf=""+(operacao.cliente.cpf)[0:3]+"."+(operacao.cliente.cpf)[3:6]+"."+(operacao.cliente.cpf)[6:9]+"-"+(operacao.cliente.cpf)[9:11]}}
           <p class=""><b>CPF/RG:</b> {{=operacao.cliente.cpf}} | {{=operacao.cliente.rg}}</p>
           <p class=""><b>TIPO DE OPERAÇÃO:</b> {{=operacao.tipo_operacao}}</p>
+            {{if not (operacao.tipo_operacao.count("Próprio")):}}
           <p class=""><b>TERCEIROS NOME:</b> {{=operacao.nome}}</p>
           <p class=""><b>TELEFONE TERCEIROS:</b> {{=operacao.telefone}}</p>
             {{if len(operacao.cliente.email)>10:}}
           <p class=""><b>E- MAIL:</b> {{=operacao.cliente.email}}</p>
             {{pass}}
+            {{pass}}
+            {{if not (operacao.banco.count("Espécie")):}}
           <h5 class="text-center border"><b>DADOS BANCÁRIOS</b></h5>
           <p class=""><b>BANCO:</b> {{=operacao.banco}}</p>
           <p class=""><b>AGENCIA/CONTA:</b> {{=operacao.agencia}} | {{=operacao.conta}}</p>
@@ -51,6 +53,11 @@
           <p class=""><b>CPF:</b> {{=operacao.cpf_conta}}</p>
           <p class=""><b>NOME:</b> {{=operacao.nome_conta}}</p>
           <p class=""><b>TIPO DE CONTA:</b> {{=operacao.tipo_conta}}</p>
+            {{else:}}
+            
+          <h5 class="text-center border"><b>INFORMAÇÕES</b></h5>
+          <p class=""><b>VALOR RECEBIDO EM ESPÉCIE</b></p>
+            {{pass}}
             {{parcela=0}}
             {{if (operacao.valor_operacao>0) and (operacao.quant_parcelas>0):}}
             {{parcela=operacao.valor_operacao/operacao.quant_parcelas}}
