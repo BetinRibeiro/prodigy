@@ -87,6 +87,7 @@
 'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
 'Enter a value': 'Enter a value',
 'Enter an integer between %(min)g and %(max)g': 'Informe um valor inteiro entre %(min)g e %(max)g',
+'Enter date as %(format)s': 'Enter date as %(format)s',
 'Errors': 'Erros',
 'export as csv file': 'exportar como um arquivo csv',
 'FAQ': 'Perguntas frequentes',
