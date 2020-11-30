@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 def index(): 
+    data_atual=request.now
     mes=request.now
     ano=request.now
     mes=request.args(0, cast=int)

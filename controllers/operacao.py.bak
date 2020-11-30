@@ -80,7 +80,7 @@ def alt_operacao():
     form = SQLFORM(db.operacao, request.args(0, cast=int), deletable=deletar)
     if form.process().accepted:
         session.flash = 'Projeto atualizado'
-        redirect(URL('operacao','visualizar_operacao', args=cliente.id))
+        redirect(URL('operacao','visualizar_operacao', args=operacao.id))
     elif form.errors:
         response.flash = 'Erros no formulário!'
     return dict(form=form)

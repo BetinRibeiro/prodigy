@@ -51,11 +51,7 @@
 {{lucrototal=0}}
 <div class="py-5">
     <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h5 class="">Operações</h5>
-        </div>
-      </div>
+      
       <div class="row">
         <div class="col-md-12">
           <a class="btn btn-link" href="{{=URL('default','index')}}" style="color:#3b5998">
@@ -72,6 +68,11 @@
               <a class="btn btn-link" href="{{=URL('index',  args=[ultima_data.month,ultima_data.year])}}" style="color:#3b5998">Próximo Mês
                   <i class="fa fa-fw fa-1x py-1 fa-arrow-right"></i> 
               </a></center>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <marquee>Servidor de desenvolvimento vencido, o sistema será desativado em {{=10-data_atual.day}} dias, faça o backup dos seus dados ou entre em contato com o desenvolvedor para autorizar integração.</marquee>
         </div>
       </div>
       <div class="row">
