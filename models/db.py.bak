@@ -33,7 +33,7 @@ if not request.env.web2py_runtime_gae:
     db = DAL(configuration.get('db.uri'),
              pool_size=configuration.get('db.pool_size'),
              migrate_enabled=configuration.get('db.migrate'),
-             check_reserved=['all'],migrate=False, fake_migrate=False
+             check_reserved=['all'],migrate=False, fake_migrate=False)
 else:
     # ---------------------------------------------------------------------
     # connect to Google BigTable (optional 'google:datastore://namespace')
@@ -218,12 +218,12 @@ db.operacao.conta.requires  = IS_MATCH('^\d{2,10}-\d{1}$', error_message='Format
 db.operacao.tipo.requires = IS_IN_SET(['Simulação','Operação Real'])
 db.operacao.tipo_operacao.requires = IS_IN_SET(['Cartão de Credito - Próprio','Cartão de Credito - Terceiro'])
 
-db.operacao.quant_parcelas.requires = IS_IN_SET(['1','2','3','4','5','6','7','8','9','10','11','12'])
+db.operacao.quant_parcelas.requires = IS_IN_SET(['1','2','3','4','5','6','7','8','9','10','11','12','18'])
 
-db.operacao.banco.requires = IS_IN_SET(['000 – Em Espécie.','001 – Banco do Brasil S.A.','033 – Banco Santander (Brasil) S.A.','104 – Caixa Econômica Federal','237 – Banco Bradesco S.A.','341 – Banco Itaú S.A.','356 – Banco Real S.A. (antigo)','389 – Banco Mercantil do Brasil S.A.','399 – HSBC Bank Brasil S.A. – Banco Múltiplo','422 – Banco Safra S.A.','453 – Banco Rural S.A.','633 – Banco Rendimento S.A.','652 – Itaú Unibanco Holding S.A.','745 – Banco Citibank S.A.'])
+db.operacao.banco.requires = IS_IN_SET(['000 – Em Espécie.','001 – Banco do Brasil S.A.','004 - Banco do Nordeste do Brasil S.A.','033 – Banco Santander (Brasil) S.A.','077 - Banco Inter','104 – Caixa Econômica Federal','237 – Banco Bradesco S.A.','260 - Nubank','290 - Pagseguro','341 – Banco Itaú S.A.','356 – Banco Real S.A. (antigo)','389 – Banco Mercantil do Brasil S.A.','399 – HSBC Bank Brasil S.A. – Banco Múltiplo','422 – Banco Safra S.A.','453 – Banco Rural S.A.','633 – Banco Rendimento S.A.','652 – Itaú Unibanco Holding S.A.','745 – Banco Citibank S.A.'])
 
 db.operacao.op.requires = IS_IN_SET(['000 – Em Espécie','001 – Conta Corrente de Pessoa Física','002 – Conta Simples de Pessoa Física','003 – Conta Corrente de Pessoa Jurídica','006 – Entidades Públicas','007 – Depósitos Instituições Financeiras','013 – Poupança de Pessoa Física','022 – Poupança de Pessoa Jurídica','028 – Poupança de Crédito Imobiliário','043 – Depósitos Lotéricos'])
 
 db.operacao.tipo_conta.requires = IS_IN_SET(['Corrente','Poupança'])
 
-db.operacao.operadora.requires = IS_IN_SET(['Visa', 'MasterCard', 'American Express', 'Hipercard', 'Elo','Maq Stone'])
+db.operacao.operadora.requires = IS_IN_SET(['Visa (Max)','Visa (Infinite)', 'MasterCard (Max)', 'MasterCard (Infinite)', 'American Express (Max)', 'Hiper (Infinite)', 'Hipercard (Max)', 'Hipercard  (Infinite)', 'Elo (Max)', 'Elo (Infinite)','Maq Stone'])
