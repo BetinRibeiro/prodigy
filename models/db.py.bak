@@ -226,4 +226,4 @@ db.operacao.op.requires = IS_IN_SET(['000 – Em Espécie','001 – Conta Corren
 
 db.operacao.tipo_conta.requires = IS_IN_SET(['Corrente','Poupança'])
 
-db.operacao.operadora.requires = IS_IN_SET(['Visa (Max)','Visa (Infinite)', 'MasterCard (Max)', 'MasterCard (Infinite)', 'American Express (Max)', 'Hiper (Infinite)', 'Hipercard (Max)', 'Hipercard  (Infinite)', 'Elo (Max)', 'Elo (Infinite)','Maq Stone'])
+db.operacao.operadora.requires = IS_IN_SET(['Visa (Max)','Visa (Infinite)', 'MasterCard (Max)', 'MasterCard (Infinite)', 'American Express (Max)', 'Hiper (Infinite)', 'Hipercard (Max)', 'Hipercard (Infinite)', 'Elo (Max)', 'Elo (Infinite)','Maq Stone'])

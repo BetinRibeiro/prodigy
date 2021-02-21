@@ -164,6 +164,7 @@ db.define_table('cliente',
                 Field('numero', 'string', label='Numero',requires = IS_UPPER()),
                 Field('bairro', 'string', label='Bairro', default='',requires = IS_UPPER()),
                 Field('cidade', 'string', label='Cidade', default='Juazeiro do Norte CE',requires = IS_UPPER()),
+                Field('quant_ops', 'integer',label='Quant. Operação', writable=False, readable=False, default=0, notnull=True),
                 Field('email', 'string', label='Email', default='Sem Email',requires = IS_UPPER()),
                 Field('observacao', 'text', label='Observação',requires = IS_UPPER()),
                 format='%(nome)s')
