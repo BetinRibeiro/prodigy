@@ -36,6 +36,8 @@
                       <td>{{=cliente.cpf}}</td>
                     </tr>
                     <tr>
+                        {{cliente.telefone=(cliente.telefone).replace(".","").replace("-","").replace("(","").replace(")","").replace(" ","")}}
+                    {{cliente.telefone="("+(cliente.telefone)[0:2]+") "+(cliente.telefone)[2:7]+"-"+(cliente.telefone)[7:11]}}
                       <td>Telefone</td>
                       <td>{{=cliente.telefone}}</td>
                     </tr>

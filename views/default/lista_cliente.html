@@ -29,6 +29,9 @@
             <table class="table table-striped table-borderless">
               <thead>
                 <tr>
+                  {{if False:}}
+                  <th scope="col">Q.Op</th>
+                  {{pass}}
                   <th scope="col">Nome</th>
                   <th scope="col">CPF</th>
                   <th scope="col">Telefone</th>
@@ -47,6 +50,9 @@
                 <tr>
                     {{pass}}
                     {{pass}}
+                  {{if False:}}
+                  <th scope="row">{{=row.quant_ops}}</th>
+                  {{pass}}
                   <th scope="row">{{=row.nome}}</th>
                     {{row.cpf=(row.cpf).replace(".","").replace("-","")}}
                     {{row.cpf=""+(row.cpf)[0:3]+"."+(row.cpf)[3:6]+"."+(row.cpf)[6:9]+"-"+(row.cpf)[9:11]}}

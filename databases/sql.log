@@ -11529,3 +11529,41 @@ success!
 success!
 success!
 success!
+timestamp: 2021-02-21T13:36:51.079913
+ALTER TABLE "cliente" ADD "quant_ops" INTEGER NOT NULL DEFAULT 0;
+success!
+timestamp: 2021-02-21T13:38:44.365750
+CREATE TABLE "operacao"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "cliente" INTEGER REFERENCES "cliente" ("id") ON DELETE CASCADE  ,
+    "tipo" CHAR(512) NOT NULL DEFAULT 'Operação Real',
+    "tipo_operacao" CHAR(512) NOT NULL DEFAULT 'Cartão de Credito - Próprio',
+    "nome" CHAR(512),
+    "cpf" CHAR(512),
+    "telefone" CHAR(512),
+    "valor_repassado" DOUBLE NOT NULL DEFAULT 0.0,
+    "valor_cobrado_operadora" DOUBLE NOT NULL DEFAULT 0.0,
+    "quant_parcelas" INTEGER NOT NULL DEFAULT 6,
+    "operadora" CHAR(512) NOT NULL DEFAULT 'Visa',
+    "bonus" DOUBLE NOT NULL DEFAULT 0.0,
+    "valor_operacao" DOUBLE NOT NULL DEFAULT 0.0,
+    "data_operacao" DATE NOT NULL DEFAULT '2021-02-21',
+    "banco" CHAR(512) NOT NULL DEFAULT '000 – Em Espécie.',
+    "agencia" CHAR(512) NOT NULL DEFAULT '000-0',
+    "conta" CHAR(512) NOT NULL DEFAULT '000-0',
+    "op" CHAR(512) NOT NULL DEFAULT '000 – Em Espécie',
+    "tipo_conta" CHAR(512) NOT NULL DEFAULT 'Poupança',
+    "nome_conta" CHAR(512) NOT NULL DEFAULT '',
+    "cpf_conta" CHAR(512) NOT NULL DEFAULT '',
+    "produtor" INTEGER REFERENCES "produtor" ("id") ON DELETE CASCADE  NOT NULL DEFAULT 1 ,
+    "valor_comissao" DOUBLE NOT NULL DEFAULT 0.0,
+    "produtor_pago" CHAR(1),
+    "taxa_operadora" DOUBLE NOT NULL DEFAULT 0.0,
+    "confirmado" CHAR(1),
+    "is_active" CHAR(1),
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+faked!

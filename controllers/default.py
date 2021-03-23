@@ -10,9 +10,9 @@ def index():
 
 @auth.requires_login()
 def lista_cliente():
-
+    usuario=auth.user
     # Se não for unformado o número da página, deduzimos que é a primeira
-    paginacao = 10
+    paginacao = 15
     if len(request.args) == 0:
         pagina = 1
     else:
@@ -45,13 +45,15 @@ def lista_cliente():
     # Calcula os limites da consulta
     limites = (paginacao*(pagina-1), (paginacao*pagina))
     registros = db(db.cliente).select(
-        limitby=limites,
+        limitby=limites, orderby=~db.cliente.id
         )
+    for reg in registros:
+      reg.quant_ops = db(db.operacao.cliente==reg.id).count()
+      reg.update_record()
     consul=(request.args(1))
     if (consul):
         registros = db((db.cliente.cpf.contains(consul))|(db.cliente.nome.contains(consul))).select(limitby=(0,20))
-    return dict(rows=registros, pagina=pagina, paginas=paginas, total=total)
-    return locals()
+    return dict(rows=registros, pagina=pagina, paginas=paginas, total=total, usuario=usuario)
 
 def lista_cliente_amostra():
 
